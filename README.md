@@ -37,3 +37,7 @@ Further settings can be passed to the script using environment variables:
 | BEAST\_STACK  | Amount of stack space allocated to java VM  | export BEAST\_STACK=128m           |
 
 These need to be set before running `runbeast.sh`.
+
+#### License
+
+Read the file `LICENSE` for the licensing terms of the contents of this repository.
