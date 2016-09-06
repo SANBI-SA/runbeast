@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from random import randint
+from random import SystemRandom
 
 if len(sys.argv) == 2:
   seed = sys.argv[1]
@@ -13,7 +13,8 @@ else:
 
 seedlen = len('1433686807619')
 
+generator = SystemRandom()
 for i in range(seedlen-len(seed)):
-  seed += str(randint(0,9))
+  seed += str(generator.randint(0,9))
 
 print seed

@@ -36,7 +36,8 @@ if [ -n "$BEAST_SEED" ] ; then
   echo "BEAST SEED: $BEAST_SEED"
 else
   # generate our own seed because BEAST uses current time for seed
-  BEAST_SEED=`python -c 'from __future__ import print_function; import random; max = 2147483647; print(random.SystemRandom().randint(1, max))'`
+  # here we generate a single random digit, the code in make_seed.py will fill in the rest in runbeast_xml.sh
+  BEAST_SEED=`python -c 'from __future__ import print_function; import random; print(random.SystemRandom().randint(0, 9))'`
   export BEAST_SEED
 fi
 
