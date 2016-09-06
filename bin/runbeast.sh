@@ -34,6 +34,10 @@ export BEAST
 
 if [ -n "$BEAST_SEED" ] ; then
   echo "BEAST SEED: $BEAST_SEED"
+else
+  # generate our own seed because BEAST uses current time for seed
+  BEAST_SEED=`python -c 'from __future__ import print_function; import random; max = 2147483647; print(random.SystemRandom().randint(1, max))'`
+  export BEAST_SEED
 fi
 
 count=0
