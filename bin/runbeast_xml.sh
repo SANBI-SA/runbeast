@@ -35,5 +35,23 @@ fi
 
 which beast
 XML=$1
+
+HOSTNAME=$(hostname -s)
+if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
+  echo "running on gridg"
+  ORIG_WORKDIR=$(pwd)
+  WORKDIR=/var/tmp/beast/$JOB_ID
+  if [[ -d $WORKDIR ]] ; then rm -rf $WORKDIR ; fi
+  mkdir $WORKDIR
+  cp $XML $WORKDIR
+  cd $WORKDIR
+fi
+
 echo beast -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
 time beast -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
+
+if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
+  cp * $ORIG_WORKDIR
+  cd $ORIG_WORKDIR
+  rm -rf $WORKDIR
+fi
