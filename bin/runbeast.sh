@@ -51,7 +51,7 @@ for i in `find . -maxdepth 1 -type d` ; do
   CURDIR=`pwd`
   WD=$CURDIR/$i
   PATH=$PATH:$CURDIR
-  qsub -v BEAST_SEED -v BEAST_MEM -v BEAST_STACK -v BEAST -v BEAGLE -l h_vmem=$BEAST_HMEM -wd $WD -N $NAME -q $BEAST_QUEUE `which runbeast_xml.sh` $CURDIR/$XML
+  qsub -v BEAST_SEED -v BEAST_MEM -v BEAST_STACK -v BEAST -v BEAGLE -l h_vmem=$BEAST_HMEM -S /bin/bash -wd $WD -N $NAME -q $BEAST_QUEUE `which runbeast_xml.sh` $CURDIR/$XML
 done
 if [ $count -eq 0 ] ; then
   echo "No jobs submitted. Do you have rep subdirectories?" >& 2

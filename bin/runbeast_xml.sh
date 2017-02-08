@@ -37,7 +37,8 @@ which beast
 XML=$1
 
 HOSTNAME=$(hostname -s)
-if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
+echo "running on :$HOSTNAME:"
+if [[ $HOSTNAME =~ ^gridg[0-9]+ ]] ; then
   echo "running on gridg"
   ORIG_WORKDIR=$(pwd)
   WORKDIR=/var/tmp/beast/$JOB_ID
@@ -45,6 +46,8 @@ if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
   mkdir $WORKDIR
   cp $XML $WORKDIR
   cd $WORKDIR
+else
+  echo "not running on gridg"
 fi
 
 echo beast -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML

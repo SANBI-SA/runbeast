@@ -38,6 +38,18 @@ Further settings can be passed to the script using environment variables:
 
 These need to be set before running `runbeast.sh`.
 
+When running on the gridg* machines, local disk is used as working directory. To find where the files
+for your job are while the job is still running, use `qstat` to find the job ID and
+
+    where_is_job.sh <JOBID>
+
+where `<JOBID>` is the job ID you're looking for to find out where the files are. The output
+of this command can also be used as an argument for scp, e.g. 
+
+   scp -r $(where_is_job.sh 7514262) .
+
+to fetch the files from job `7514262`.
+
 #### License
 
 Read the file `LICENSE` for the licensing terms of the contents of this repository.
