@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function, division
 import sys
 from random import SystemRandom
 
@@ -17,4 +18,4 @@ generator = SystemRandom()
 for i in range(seedlen-len(seed)):
   seed += str(generator.randint(0,9))
 
-print seed
+print(seed)

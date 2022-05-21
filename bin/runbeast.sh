@@ -10,11 +10,12 @@ if [ -z "$BEAST_HMEM" ] ; then
   export BEAST_HMEM
 fi
 
+BEAST_CORES=2
+
 if [ $# -ne 1 -a $# -ne 2 ] ; then
   echo "Usage: runbeast.sh <XML filename> [<BEAST version>]" >&2
   echo "    If you want to use non-standard BEAGLE flags, set BEAGLE environment variable (e.g 'export BEAGLE=-beagle_SSE')" >&2
-  echo "    and the queue is set to $BEAST_QUEUE, set the BEAST_QUEUE environment variable to use a different queue." >&2
-  echo "    By default 6GB of RAM is requested (-l h_vmem=6G), if you want more set BEAST_HMEM environment variable to the" >&2
+  echo "    By default 6GB of RAM is requested (--mem=6G), if you want more set BEAST_HMEM environment variable to the" >&2
   echo "    value you want (e.g. export BEAST_HMEM=8G). BEAST uses 64m for Java stack size and 2048m for Java heap size by" >&2
   echo "    default, if you want to change these set BEAST_STACK and BEAST_MEM respectively. Finally the BEAST_SEED" >&2
   echo "    environment variable allows for manual setting of the BEAST seed. Whatever you set this variable to will" >&2
@@ -51,7 +52,7 @@ for i in `find . -maxdepth 1 -type d` ; do
   CURDIR=`pwd`
   WD=$CURDIR/$i
   PATH=$PATH:$CURDIR
-  qsub -v BEAST_SEED -v BEAST_MEM -v BEAST_STACK -v BEAST -v BEAGLE -l h_vmem=$BEAST_HMEM -S /bin/bash -wd $WD -N $NAME -q $BEAST_QUEUE `which runbeast_xml.sh` $CURDIR/$XML
+  sbatch --export BEAST_SEED,BEAST_MEM,BEAST_STACK,BEAST,BEAGLE -c $BEAST_CORES --mem=$BEAST_HMEM -D $WD -J $NAME `which runbeast_xml.sh` $CURDIR/$XML
 done
 if [ $count -eq 0 ] ; then
   echo "No jobs submitted. Do you have rep subdirectories?" >& 2

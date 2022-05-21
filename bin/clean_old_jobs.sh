@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO: update this for SLURM
 BEAST_DIR=/var/tmp/beast
 for num in $(seq 1 2) ; do 
   for dir in $(ssh -x gridg$num.sanbi.ac.za ls $BEAST_DIR) ; do 

@@ -1,19 +1,16 @@
 #!/bin/bash
 
-. /etc/profile.d/module.sh
-
 echo "BEAST is: $BEAST"
 if [ -z "$BEAST" ] ; then
-  BEAST=default
+  BEAST=1.10.4--hdfd78af_2
 fi
 
-module add beast/$BEAST
+BEAST_CMD=singularity exec /tools/containers/beast/beast-${BEAST}.simg beast
+
 THREADS=
-if [ -n "$pe_slots" ] ; then
-  THREADS="-threads $pe_slots"
+if [ -n "$SLURM_NPROCS" ] ; then
+  THREADS="-threads $SLURM_NPROCS
 fi
-
-module add runbeast
 
 if [ -n "$BEAST_SEED" ] ; then
   SEED=`make_seed.py $BEAST_SEED`
@@ -33,28 +30,28 @@ if [ $# != 1 ] ; then
   exit 1
 fi
 
-which beast
 XML=$1
 
-HOSTNAME=$(hostname -s)
-echo "running on :$HOSTNAME:"
-if [[ $HOSTNAME =~ ^gridg[0-9]+ ]] ; then
-  echo "running on gridg"
-  ORIG_WORKDIR=$(pwd)
-  WORKDIR=/var/tmp/beast/$JOB_ID
-  if [[ -d $WORKDIR ]] ; then rm -rf $WORKDIR ; fi
-  mkdir $WORKDIR
-  cp $XML $WORKDIR
-  cd $WORKDIR
-else
-  echo "not running on gridg"
-fi
+# this is old node-specific logic
+# HOSTNAME=$(hostname -s)
+# echo "running on :$HOSTNAME:"
+# if [[ $HOSTNAME =~ ^gridg[0-9]+ ]] ; then
+#   echo "running on gridg"
+#   ORIG_WORKDIR=$(pwd)
+#   WORKDIR=/var/tmp/beast/$JOB_ID
+#   if [[ -d $WORKDIR ]] ; then rm -rf $WORKDIR ; fi
+#   mkdir $WORKDIR
+#   cp $XML $WORKDIR
+#   cd $WORKDIR
+# else
+#   echo "not running on gridg"
+# fi
 
-echo beast -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
-time beast -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
+echo $BEAST_CMD -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
+time $BEAST_CMD -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
 
-if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
-  cp * $ORIG_WORKDIR
-  cd $ORIG_WORKDIR
-  rm -rf $WORKDIR
-fi
+# if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
+#   cp * $ORIG_WORKDIR
+#   cd $ORIG_WORKDIR
+#   rm -rf $WORKDIR
+# fi

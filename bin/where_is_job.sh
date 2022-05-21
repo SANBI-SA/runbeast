@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#TODO: Update this for SLURM
 if [[ $# -ne 1 ]] ; then
   echo "Usage: where_is_job.sh <JOBID>" >&2
   exit 1
