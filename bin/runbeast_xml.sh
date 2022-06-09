@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z "$BEAST_VER" ] ; then
+if [ -z "$BEAST_VER" -o "$BEAST_VER" = "default" ] ; then
   BEAST_VER=1.10.4--hdfd78af_2
 fi
 echo "BEAST is: $BEAST_VER"
