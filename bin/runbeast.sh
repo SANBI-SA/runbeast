@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SCRIPT_PATH=$(dirname $BASH_SOURCE)
 
