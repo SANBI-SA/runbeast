@@ -1,19 +1,21 @@
 #!/bin/bash
 
-echo "BEAST is: $BEAST"
-if [ -z "$BEAST" ] ; then
-  BEAST=1.10.4--hdfd78af_2
+if [ -z "$BEAST_VER" ] ; then
+  BEAST_VER=1.10.4--hdfd78af_2
 fi
+echo "BEAST is: $BEAST_VER"
 
-BEAST_CMD=singularity exec /tools/containers/beast/beast-${BEAST}.simg beast
+BEAST_CMD="singularity exec /tools/containers/beast/beast-${BEAST}.simg beast"
 
 THREADS=
 if [ -n "$SLURM_NPROCS" ] ; then
-  THREADS="-threads $SLURM_NPROCS
+  THREADS="-threads $SLURM_NPROCS"
+else
+  THREADS="-threads 1"
 fi
 
 if [ -n "$BEAST_SEED" ] ; then
-  SEED=`make_seed.py $BEAST_SEED`
+  SEED=$(/tools/software/runbeast/bin/make_seed.py $BEAST_SEED)
   SEED_OPT="-seed $SEED"
 else
   SEED_OPT=""
@@ -48,7 +50,7 @@ XML=$1
 # fi
 
 echo $BEAST_CMD -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
-time $BEAST_CMD -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
+$BEAST_CMD -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
 
 # if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
 #   cp * $ORIG_WORKDIR

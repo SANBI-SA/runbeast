@@ -29,11 +29,11 @@ fi
 XML=$1
 
 if [ $# -eq 2 ] ; then
-  BEAST=$2
+  BEAST_VER=$2
 else
-  BEAST="default"
+  BEAST_VER="default"
 fi
-export BEAST
+export BEAST_VER
 
 if [ -n "$BEAST_SEED" ] ; then
   echo "BEAST SEED: $BEAST_SEED"
