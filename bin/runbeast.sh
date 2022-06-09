@@ -1,5 +1,7 @@
 #!/bin/sh
 
+SCRIPT_PATH=$(dirname $BASH_SOURCE)
+
 if [ -z "$BEAST_QUEUE" ] ; then
   BEAST_QUEUE=long.q
   export BEAST_QUEUE
@@ -52,7 +54,7 @@ for i in `find . -maxdepth 1 -type d` ; do
   CURDIR=`pwd`
   WD=$CURDIR/$i
   PATH=$PATH:$CURDIR
-  sbatch --export BEAST_SEED,BEAST_MEM,BEAST_STACK,BEAST,BEAGLE -c $BEAST_CORES --mem=$BEAST_HMEM -D $WD -J $NAME `which runbeast_xml.sh` $CURDIR/$XML
+  sbatch --export BEAST_SEED,BEAST_MEM,BEAST_STACK,BEAST,BEAGLE -c $BEAST_CORES --mem=$BEAST_HMEM -D $WD -J $NAME $SCRIPT_PATH/runbeast_xml.sh $CURDIR/$XML
 done
 if [ $count -eq 0 ] ; then
   echo "No jobs submitted. Do you have rep subdirectories?" >& 2
