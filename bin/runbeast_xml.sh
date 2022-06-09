@@ -5,9 +5,8 @@ if [ -z "$BEAST_VER" -o "$BEAST_VER" = "default" ] ; then
 fi
 echo "BEAST is: $BEAST_VER"
 
-BEAST_CMD="singularity exec /tools/containers/beast/beast-${BEAST}.simg beast"
+BEAST_CMD="singularity exec /tools/containers/beast/beast-${BEAST_VER}.simg beast"
 
-THREADS=
 if [ -n "$SLURM_NPROCS" ] ; then
   THREADS="-threads $SLURM_NPROCS"
 else
