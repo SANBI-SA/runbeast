@@ -3,7 +3,7 @@
 SCRIPT_PATH=$(dirname $BASH_SOURCE)
 
 if [[ $SLURM_CLUSTER_NAME == "ilifu"* ]] ; then
-  BEAST_PARTITION="-p GPUV100 --exclusive"
+  BEAST_PARTITION="-p GPUV100 --gres=gpu:1"
   export BEAST_PARTITION
 fi
 
