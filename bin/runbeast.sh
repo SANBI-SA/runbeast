@@ -2,8 +2,8 @@
 
 SCRIPT_PATH=$(dirname $BASH_SOURCE)
 
-if [[ $SLURM_CLUSTER_NAME == "ilifu"* ]] ; then
-  BEAST_PARTITION="-p GPUV100 --gres=gpu:1"
+if [[ $(hostname) == "slurm-login" || $SLURM_CLUSTER_NAME == "ilifu"* ]] ; then
+  BEAST_PARTITION="-p GPU,GPUV100 --gpus-per-node=1"
   export BEAST_PARTITION
 fi
 
