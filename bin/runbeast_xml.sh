@@ -1,11 +1,20 @@
 #!/bin/bash
 
 if [ -z "$BEAST_VER" -o "$BEAST_VER" = "default" ] ; then
-  BEAST_VER=1.10.4--hdfd78af_2
+  if [[ $SLURM_CLUSTER_NAME == "ilifu"* ]] ; then
+    BEAST_VER=1.10.4
+  else
+    BEAST_VER=1.10.4--hdfd78af_2
+  fi
 fi
 echo "BEAST is: $BEAST_VER"
 
-BEAST_CMD="singularity exec /tools/containers/beast/beast-${BEAST_VER}.simg beast"
+if [[ $SLURM_CLUSTER_NAME == "ilifu"* ]] ; then
+  module add beast/beast$BEAST_VER
+  BEAST_CMD=${BASH_ALIASES[beast]}
+else
+  BEAST_CMD="singularity exec /tools/containers/beast/beast-${BEAST_VER}.simg"
+fi
 
 if [ -n "$SLURM_NPROCS" ] ; then
   THREADS="-threads $SLURM_NPROCS"
@@ -14,14 +23,18 @@ else
 fi
 
 if [ -n "$BEAST_SEED" ] ; then
-  SEED=$(/tools/software/runbeast/bin/make_seed.py $BEAST_SEED)
+  SEED=$RANDOM$RANDOM
   SEED_OPT="-seed $SEED"
 else
   SEED_OPT=""
 fi
 
 if [ -z "$BEAGLE" ] ; then
-  BEAGLE_OPT="-beagle"
+  if [[ $SLURM_CLUSTER_NAME == "ilifu"* ]] ; then
+    BEAGLE_OPT="-beagle_GPU"
+  else
+    BEAGLE_OPT="-beagle"
+  fi
 else
   BEAGLE_OPT=$BEAGLE
 fi
@@ -48,7 +61,7 @@ XML=$1
 #   echo "not running on gridg"
 # fi
 
-echo $BEAST_CMD -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
+echo $BEAST_CMD beast -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
 $BEAST_CMD -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
 
 # if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
