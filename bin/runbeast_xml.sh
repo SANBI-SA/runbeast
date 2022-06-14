@@ -13,7 +13,7 @@ if [[ $SLURM_CLUSTER_NAME == "ilifu"* ]] ; then
   module add beast/beast$BEAST_VER
   BEAST_CMD=${BASH_ALIASES[beast]}
 else
-  BEAST_CMD="singularity exec /tools/containers/beast/beast-${BEAST_VER}.simg"
+  BEAST_CMD="singularity exec /tools/containers/beast/beast-${BEAST_VER}.simg beast"
 fi
 
 if [ -n "$SLURM_NPROCS" ] ; then
@@ -61,7 +61,6 @@ XML=$1
 #   echo "not running on gridg"
 # fi
 
-echo $BEAST_CMD beast -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
 $BEAST_CMD -overwrite $SEED_OPT $THREADS $BEAGLE_OPT $XML
 
 # if [[ "$HOSTNAME" =~ ^gridg[0-9]+ ]] ; then
