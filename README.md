@@ -3,7 +3,7 @@
 This script makes running multiple (BEAST)[http://beast.bio.ed.ac.uk/] jobs easier by looking
 for a standard directory structure, with the BEAST XML file in the current directory and one
 subdirectory for each replicate you want to run, and then submitting jobs to the cluster
-for each subdirectory it finds. So if you are in `/cip0/research/scratch/user/mybeast`
+for each subdirectory it finds. So if you are in `/usr/people/myuser/mybeast`
 and the current directory contains `mybeastjob.xml` the script looks for all
 subdirectories (e.g. ones names `rep1`, `rep2`, etc) and starts a BEAST job
 in each subdirectory using `mybeastjob.xml` as input.
@@ -29,7 +29,6 @@ Further settings can be passed to the script using environment variables:
 
 | Variable Name | Purpose                                     | Example                            |
 | --------------|---------------------------------------------|------------------------------------|
-| BEAST\_QUEUE  | Queue jobs will be submitted to.            | export BEAST\_QUEUE=gordon.q       |
 | BEAST\_HMEM   | Amount of RAM requested for BEAST job       | export BEAST\_HMEM=10G             |
 | BEAST\_SEED   | Manually set the BEAST random seed          | export BEAST\_SEED=1437498772784   |
 | BEAGLE        | Flag passed to determine BEAGLE usage       | export BEAGLE=-beagle              |
@@ -37,18 +36,6 @@ Further settings can be passed to the script using environment variables:
 | BEAST\_STACK  | Amount of stack space allocated to java VM  | export BEAST\_STACK=128m           |
 
 These need to be set before running `runbeast.sh`.
-
-When running on the gridg* machines, local disk is used as working directory. To find where the files
-for your job are while the job is still running, use `qstat` to find the job ID and
-
-    where_is_job.sh <JOBID>
-
-where `<JOBID>` is the job ID you're looking for to find out where the files are. The output
-of this command can also be used as an argument for scp, e.g. 
-
-   scp -r $(where_is_job.sh 7514262) .
-
-to fetch the files from job `7514262`.
 
 #### License
 
